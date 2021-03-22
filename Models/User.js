@@ -13,5 +13,8 @@ export default class User {
   expo_id = String;
   charity = Number;
   duty = Number;
+  FirstName = String;
+  LastName = String;
+  enabled = Number;
   User() {}
 }

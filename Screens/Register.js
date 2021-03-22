@@ -24,6 +24,8 @@ const Register = ({ route, navigation }) => {
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState("");
+  const [FirstName, setFirstName] = useState("");
+  const [LastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [Cpassword, setCpassword] = useState("");
   const [image, setImage] = useState(null);
@@ -103,6 +105,9 @@ const Register = ({ route, navigation }) => {
     user.charity = 0;
     user.duty = 0;
     user.phone = phone;
+    user.FirstName = FirstName;
+    user.LastName = LastName;
+    user.enabled = 1;
     user.createdAt = new Date();
     user.photos = [];
     formData.append("user", JSON.stringify(user));
@@ -113,20 +118,25 @@ const Register = ({ route, navigation }) => {
         "Content-Type": "multipart/form-data; ",
       },
     };
+    console.log(formData);
     await axios({
-      url: "http://192.168.1.11:3000/users",
+      url: "http://192.168.1.11:3000/users/register",
       data: formData,
       method: "POST",
     }).then((res) => {
-      console.log(res.data);
-      dispatch({ type: "REGISTER", state: { user: res.data } });
+      if (res.data.message == "Account Create ! You can now Login") {
+        console.log(res.data);
+        dispatch({ type: "REGISTER", state: { user: res.data.userdata } });
+      } else alert(res.data.message);
+
+      //
     });
   };
 
   return (
     <View style={styles.container}>
       <StatusBar />
-      <Text>{API_URL}/users</Text>
+
       {step == 1 ? (
         <View style={styles.container}>
           <TextInput
@@ -144,7 +154,7 @@ const Register = ({ route, navigation }) => {
             onChangeText={(val) => {
               setPassword(val);
             }}
-            placeholder={"Email"}
+            placeholder={"Password"}
           />
           <TextInput
             style={styles.input}
@@ -153,8 +163,25 @@ const Register = ({ route, navigation }) => {
             onChangeText={(val) => {
               setCpassword(val);
             }}
-            placeholder={"Email"}
+            placeholder={"Confirm Password"}
           />
+          <Button title={"Next"} onPress={() => setStep(step + 1)} />
+        </View>
+      ) : step == 2 ? (
+        <View style={styles.container}>
+          <TextInput
+            style={styles.input}
+            value={FirstName}
+            placeholder={"FirstName"}
+            onChangeText={(val) => setFirstName(val)}
+          />
+          <TextInput
+            style={styles.input}
+            value={LastName}
+            placeholder={"LastName"}
+            onChangeText={(val) => setLastName(val)}
+          />
+          <Button title={"Back"} onPress={() => setStep(step - 1)} />
           <Button title={"Next"} onPress={() => setStep(step + 1)} />
         </View>
       ) : (
