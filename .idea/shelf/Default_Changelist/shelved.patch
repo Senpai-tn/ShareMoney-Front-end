@@ -1,0 +1,337 @@
+Index: .idea/ShareMoney.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/ShareMoney.iml	(date 1616433754578)
++++ .idea/ShareMoney.iml	(date 1616433754578)
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module type="WEB_MODULE" version="4">
++  <component name="NewModuleRootManager">
++    <content url="file://$MODULE_DIR$" />
++    <orderEntry type="inheritedJdk" />
++    <orderEntry type="sourceFolder" forTests="false" />
++  </component>
++</module>
+\ No newline at end of file
+Index: Models/User.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>export default class User {\r\n  email = String;\r\n  password = String;\r\n  products = Array;\r\n  location = Array;\r\n  establishement = Array;\r\n  photos = Array;\r\n  birthdate = Date;\r\n  role = String;\r\n  createdAt = new Date();\r\n  phone = String;\r\n  username = String;\r\n  expo_id = String;\r\n  charity = Number;\r\n  duty = Number;\r\n  User() {}\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- Models/User.js	(revision cf468c88b7a3829afa8b59e474c3916cbed0ba03)
++++ Models/User.js	(date 1616355942723)
+@@ -6,7 +6,7 @@
+   establishement = Array;
+   photos = Array;
+   birthdate = Date;
+-  role = String;
++  role = Array;
+   createdAt = new Date();
+   phone = String;
+   username = String;
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/modules.xml	(date 1616433754811)
++++ .idea/modules.xml	(date 1616433754811)
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ProjectModuleManager">
++    <modules>
++      <module fileurl="file://$PROJECT_DIR$/.idea/ShareMoney.iml" filepath="$PROJECT_DIR$/.idea/ShareMoney.iml" />
++    </modules>
++  </component>
++</project>
+\ No newline at end of file
+Index: Screens/Auth.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React from \"react\";\r\nimport {\r\n  View,\r\n  Text,\r\n  Button,\r\n  StyleSheet,\r\n  TouchableHighlight,\r\n  TouchableOpacity,\r\n} from \"react-native\";\r\n\r\nconst Auth = ({ navigation }) => {\r\n  return (\r\n    <View style={styles.container}>\r\n      <Text style={styles.title}>Welcome</Text>\r\n      <TouchableOpacity\r\n        style={styles.button}\r\n        onPress={() => {\r\n          navigation.push(\"Login\", { role: \"login   \" });\r\n        }}\r\n      >\r\n        <Text style={[styles.text, { color: \"#bb8082\" }]}>Login</Text>\r\n      </TouchableOpacity>\r\n      <TouchableOpacity\r\n        style={styles.button}\r\n        onPress={() => {\r\n          navigation.push(\"Register\", { role: \"user\" });\r\n        }}\r\n      >\r\n        <Text style={[styles.text, { color: \"#6e7582\" }]}>\r\n          Register as User\r\n        </Text>\r\n      </TouchableOpacity>\r\n      <TouchableOpacity\r\n        style={styles.button}\r\n        onPress={() => {\r\n          navigation.push(\"Register\", { role: \"seller\" });\r\n        }}\r\n      >\r\n        <Text style={[styles.text, { color: \"#046582\" }]}>\r\n          Register as Seller\r\n        </Text>\r\n      </TouchableOpacity>\r\n    </View>\r\n  );\r\n};\r\n\r\nconst styles = StyleSheet.create({\r\n  container: {\r\n    flex: 1,\r\n    justifyContent: \"center\",\r\n    alignItems: \"center\",\r\n  },\r\n  title: {\r\n    fontSize: 45,\r\n    color: \"#f39189\",\r\n    fontWeight: \"bold\",\r\n    textDecorationLine: \"underline\",\r\n    textDecorationColor: \"#f39189\",\r\n  },\r\n  button: {\r\n    justifyContent: \"center\",\r\n    alignItems: \"center\",\r\n  },\r\n  text: { fontSize: 30 },\r\n});\r\n\r\nexport default Auth;\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- Screens/Auth.js	(revision cf468c88b7a3829afa8b59e474c3916cbed0ba03)
++++ Screens/Auth.js	(date 1616235895258)
+@@ -7,6 +7,7 @@
+   TouchableHighlight,
+   TouchableOpacity,
+ } from "react-native";
++import { API_URL } from "@env";
+ 
+ const Auth = ({ navigation }) => {
+   return (
+Index: Screens/Register.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React, { useEffect, useState } from \"react\";\r\nimport {\r\n  View,\r\n  Button,\r\n  Platform,\r\n  Text,\r\n  StatusBar,\r\n  TextInput,\r\n  StyleSheet,\r\n  Image,\r\n  TouchableOpacity,\r\n} from \"react-native\";\r\nimport DateTimePicker from \"@react-native-community/datetimepicker\";\r\nimport * as ImagePicker from \"expo-image-picker\";\r\nimport User from \"../Models/User\";\r\nimport { API_URL } from \"@env\";\r\nimport mime from \"mime\";\r\nimport axios from \"axios\";\r\nimport { useDispatch } from \"react-redux\";\r\nimport AsyncStorage from \"@react-native-async-storage/async-storage\";\r\n\r\nconst Register = ({ route, navigation }) => {\r\n  const [date, setDate] = useState(new Date());\r\n  const [mode, setMode] = useState(\"date\");\r\n  const [show, setShow] = useState(false);\r\n  const [email, setEmail] = useState(\"\");\r\n  const [password, setPassword] = useState(\"\");\r\n  const [Cpassword, setCpassword] = useState(\"\");\r\n  const [image, setImage] = useState(null);\r\n  const [phone, setPhone] = useState(\"\");\r\n  const [username, setUsername] = useState(\"\");\r\n  const [step, setStep] = useState(1);\r\n  const dispatch = useDispatch();\r\n\r\n  const storeData = async (value) => {\r\n    try {\r\n      await AsyncStorage.setItem(\"@storage_Key\", JSON.stringify(value));\r\n    } catch (e) {\r\n      // saving error\r\n    }\r\n  };\r\n  const onChange = (event, selectedDate) => {\r\n    const currentDate = selectedDate || date;\r\n    setShow(Platform.OS === \"ios\");\r\n    setDate(currentDate);\r\n  };\r\n\r\n  const showMode = (currentMode) => {\r\n    setShow(true);\r\n    setMode(currentMode);\r\n  };\r\n\r\n  const showDatepicker = () => {\r\n    showMode(\"date\");\r\n  };\r\n\r\n  useEffect(() => {\r\n    (async () => {\r\n      if (Platform.OS !== \"web\") {\r\n        const {\r\n          status,\r\n        } = await ImagePicker.requestMediaLibraryPermissionsAsync();\r\n        if (status !== \"granted\") {\r\n          alert(\"Sorry, we need camera roll permissions to make this work!\");\r\n        }\r\n      }\r\n    })();\r\n  }, []);\r\n\r\n  const pickImage = async () => {\r\n    let result = await ImagePicker.launchImageLibraryAsync({\r\n      mediaTypes: ImagePicker.MediaTypeOptions.All,\r\n      allowsEditing: true,\r\n      aspect: [4, 3],\r\n      quality: 1,\r\n    });\r\n\r\n    if (!result.cancelled) {\r\n      setImage(result.uri);\r\n    }\r\n  };\r\n\r\n  const RegisterAction = async () => {\r\n    const newImageUri = \"file:///\" + image.split(\"file:/\").join(\"\");\r\n\r\n    const formData = new FormData();\r\n    formData.append(\"profile\", {\r\n      uri: newImageUri,\r\n      type: mime.getType(newImageUri),\r\n      name: newImageUri.split(\"/\").pop(),\r\n    });\r\n\r\n    let user = new User();\r\n    user.transactions = [];\r\n    user.expo_id = \"\";\r\n    user.username = username;\r\n    user.role = route.params.role;\r\n    user.email = email;\r\n    user.password = password;\r\n    user.establishement = [];\r\n    user.products = [];\r\n    user.birthdate = date;\r\n    user.charity = 0;\r\n    user.duty = 0;\r\n    user.phone = phone;\r\n    user.createdAt = new Date();\r\n    user.photos = [];\r\n    formData.append(\"user\", JSON.stringify(user));\r\n    let options = {\r\n      method: \"POST\",\r\n      body: formData,\r\n      headers: {\r\n        \"Content-Type\": \"multipart/form-data; \",\r\n      },\r\n    };\r\n    await axios({\r\n      url: \"http://192.168.1.11:3000/users\",\r\n      data: formData,\r\n      method: \"POST\",\r\n    }).then((res) => {\r\n      console.log(res.data);\r\n      dispatch({ type: \"REGISTER\", state: { user: res.data } });\r\n    });\r\n  };\r\n\r\n  return (\r\n    <View style={styles.container}>\r\n      <StatusBar />\r\n      <Text>{API_URL}/users</Text>\r\n      {step == 1 ? (\r\n        <View style={styles.container}>\r\n          <TextInput\r\n            style={styles.input}\r\n            onChangeText={(val) => {\r\n              setEmail(val);\r\n            }}\r\n            value={email}\r\n            placeholder={\"Email\"}\r\n          />\r\n          <TextInput\r\n            style={styles.input}\r\n            value={password}\r\n            secureTextEntry={true}\r\n            onChangeText={(val) => {\r\n              setPassword(val);\r\n            }}\r\n            placeholder={\"Email\"}\r\n          />\r\n          <TextInput\r\n            style={styles.input}\r\n            secureTextEntry={true}\r\n            value={Cpassword}\r\n            onChangeText={(val) => {\r\n              setCpassword(val);\r\n            }}\r\n            placeholder={\"Email\"}\r\n          />\r\n          <Button title={\"Next\"} onPress={() => setStep(step + 1)} />\r\n        </View>\r\n      ) : (\r\n        <View style={styles.container}>\r\n          <Text>Phone</Text>\r\n          <TextInput\r\n            style={styles.input}\r\n            keyboardType=\"numeric\"\r\n            value={phone}\r\n            onChangeText={(val) => setPhone(val)}\r\n          />\r\n          <Button onPress={showDatepicker} title=\"Show date picker!\" />\r\n          <Text>\r\n            Birthdate :{\" \"}\r\n            {date.getFullYear() +\r\n              \"/\" +\r\n              (date.getMonth() + 1) +\r\n              \"/\" +\r\n              date.getDate()}\r\n          </Text>\r\n          <Button title=\"Pick an image from camera roll\" onPress={pickImage} />\r\n          {image && (\r\n            <Image\r\n              source={{ uri: image }}\r\n              style={{\r\n                width: 200,\r\n                height: 200,\r\n                borderRadius: 100,\r\n                alignSelf: \"center\",\r\n              }}\r\n            />\r\n          )}\r\n          <TouchableOpacity\r\n            style={styles.button}\r\n            onPress={() => setStep(step - 1)}\r\n          >\r\n            <Text>Back</Text>\r\n          </TouchableOpacity>\r\n          <TouchableOpacity\r\n            style={styles.button}\r\n            onPress={() => RegisterAction()}\r\n          >\r\n            <Text>Register</Text>\r\n          </TouchableOpacity>\r\n        </View>\r\n      )}\r\n      {show && (\r\n        <DateTimePicker\r\n          testID=\"dateTimePicker\"\r\n          value={date}\r\n          mode={\"date\"}\r\n          is24Hour={true}\r\n          display=\"spinner\"\r\n          onChange={onChange}\r\n        />\r\n      )}\r\n    </View>\r\n  );\r\n};\r\n\r\nconst styles = StyleSheet.create({\r\n  container: {\r\n    flex: 1,\r\n    justifyContent: \"center\",\r\n    alignItems: \"center\",\r\n    width: \"100%\",\r\n    height: \"100%\",\r\n  },\r\n  title: {\r\n    alignSelf: \"center\",\r\n    fontSize: 45,\r\n  },\r\n  form: {\r\n    flex: 1,\r\n    justifyContent: \"center\",\r\n    alignItems: \"center\",\r\n  },\r\n  input: {\r\n    borderWidth: 1,\r\n    height: 40,\r\n    width: \"60%\",\r\n    borderRadius: 20,\r\n    padding: 10,\r\n    marginVertical: 20,\r\n  },\r\n  error: {\r\n    color: \"red\",\r\n    fontSize: 20,\r\n  },\r\n  button: {\r\n    marginVertical: 10,\r\n    alignSelf: \"center\",\r\n  },\r\n});\r\nexport default Register;\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- Screens/Register.js	(revision cf468c88b7a3829afa8b59e474c3916cbed0ba03)
++++ Screens/Register.js	(date 1616436218150)
+@@ -24,6 +24,8 @@
+   const [mode, setMode] = useState("date");
+   const [show, setShow] = useState(false);
+   const [email, setEmail] = useState("");
++  const [FirstName, setFirstName] = useState("");
++  const [LastName, setLastName] = useState("");
+   const [password, setPassword] = useState("");
+   const [Cpassword, setCpassword] = useState("");
+   const [image, setImage] = useState(null);
+@@ -91,10 +93,14 @@
+     });
+ 
+     let user = new User();
++    user.FirstName = FirstName;
++    user.enabled = 1;
++    user.LastName = LastName;
+     user.transactions = [];
+     user.expo_id = "";
+     user.username = username;
+-    user.role = route.params.role;
++    user.role = [];
++    user.role.push(route.params.role);
+     user.email = email;
+     user.password = password;
+     user.establishement = [];
+@@ -113,13 +119,18 @@
+         "Content-Type": "multipart/form-data; ",
+       },
+     };
++    console.log(formData);
+     await axios({
+-      url: "http://192.168.1.11:3000/users",
++      url: "http://192.168.1.11:3000/users/register",
+       data: formData,
+       method: "POST",
+     }).then((res) => {
+-      console.log(res.data);
+-      dispatch({ type: "REGISTER", state: { user: res.data } });
++      if(res.data.status == "err" )
++      {
++        alert(res.data.message)
++      }
++      else
++      dispatch({ type: "REGISTER", state: { user: res.data.userdata } });
+     });
+   };
+ 
+@@ -144,7 +155,7 @@
+             onChangeText={(val) => {
+               setPassword(val);
+             }}
+-            placeholder={"Email"}
++            placeholder={"Password"}
+           />
+           <TextInput
+             style={styles.input}
+@@ -153,11 +164,11 @@
+             onChangeText={(val) => {
+               setCpassword(val);
+             }}
+-            placeholder={"Email"}
++            placeholder={"Confirm Password"}
+           />
+           <Button title={"Next"} onPress={() => setStep(step + 1)} />
+         </View>
+-      ) : (
++      ) : step == 2 ? (
+         <View style={styles.container}>
+           <Text>Phone</Text>
+           <TextInput
+@@ -187,6 +198,31 @@
+               }}
+             />
+           )}
++          <TouchableOpacity
++            style={styles.button}
++            onPress={() => setStep(step - 1)}
++          >
++            <Text>Back</Text>
++          </TouchableOpacity>
++          <TouchableOpacity
++            style={styles.button}
++            onPress={() => setStep(step + 1)}
++          >
++            <Text>Next</Text>
++          </TouchableOpacity>
++        </View>
++      ) : (
++        <View style={styles.container}>
++          <TextInput
++            style={styles.input}
++            value={FirstName}
++            onChangeText={(val) => setFirstName(val)}
++          />
++          <TextInput
++            style={styles.input}
++            value={LastName}
++            onChangeText={(val) => setLastName(val)}
++          />
+           <TouchableOpacity
+             style={styles.button}
+             onPress={() => setStep(step - 1)}
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/misc.xml	(date 1616433754710)
++++ .idea/misc.xml	(date 1616433754710)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="JavaScriptSettings">
++    <option name="languageLevel" value="JSX" />
++  </component>
++</project>
+\ No newline at end of file
+Index: package.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>{\r\n  \"main\": \"node_modules/expo/AppEntry.js\",\r\n  \"scripts\": {\r\n    \"start\": \"expo start\",\r\n    \"android\": \"expo start --android\",\r\n    \"ios\": \"expo start --ios\",\r\n    \"web\": \"expo start --web\",\r\n    \"eject\": \"expo eject\"\r\n  },\r\n  \"dependencies\": {\r\n    \"@react-native-async-storage/async-storage\": \"^1.14.1\",\r\n    \"@react-native-community/datetimepicker\": \"3.0.4\",\r\n    \"@react-native-community/masked-view\": \"0.1.10\",\r\n    \"@react-navigation/native\": \"^5.9.3\",\r\n    \"@react-navigation/stack\": \"^5.14.3\",\r\n    \"axios\": \"^0.21.1\",\r\n    \"expo\": \"~40.0.0\",\r\n    \"expo-barcode-scanner\": \"~9.1.0\",\r\n    \"expo-image-picker\": \"~9.2.0\",\r\n    \"expo-status-bar\": \"~1.0.3\",\r\n    \"mime\": \"^2.5.2\",\r\n    \"react\": \"16.13.1\",\r\n    \"react-dom\": \"16.13.1\",\r\n    \"react-native\": \"https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz\",\r\n    \"react-native-dotenv\": \"^2.5.3\",\r\n    \"react-native-gesture-handler\": \"~1.8.0\",\r\n    \"react-native-reanimated\": \"~1.13.0\",\r\n    \"react-native-safe-area-context\": \"3.1.9\",\r\n    \"react-native-screens\": \"~2.15.2\",\r\n    \"react-native-web\": \"~0.13.12\",\r\n    \"react-redux\": \"^7.2.2\",\r\n    \"redux\": \"^4.0.5\"\r\n  },\r\n  \"devDependencies\": {\r\n    \"@babel/core\": \"~7.9.0\"\r\n  },\r\n  \"private\": true\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- package.json	(revision cf468c88b7a3829afa8b59e474c3916cbed0ba03)
++++ package.json	(date 1616436412238)
+@@ -29,7 +29,8 @@
+     "react-native-screens": "~2.15.2",
+     "react-native-web": "~0.13.12",
+     "react-redux": "^7.2.2",
+-    "redux": "^4.0.5"
++    "redux": "^4.0.5",
++    "react-native-maps": "0.27.1"
+   },
+   "devDependencies": {
+     "@babel/core": "~7.9.0"
+Index: .idea/.gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/.gitignore	(date 1616433764629)
++++ .idea/.gitignore	(date 1616433764629)
+@@ -0,0 +1,8 @@
++# Default ignored files
++/shelf/
++/workspace.xml
++# Datasource local storage ignored files
++/../../../../../../../:\Users\khale\Desktop\React Native Projects\ShareMoney\.idea/dataSources/
++/dataSources.local.xml
++# Editor-based HTTP Client requests
++/httpRequests/
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/vcs.xml	(date 1616433754878)
++++ .idea/vcs.xml	(date 1616433754878)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="VcsDirectoryMappings">
++    <mapping directory="$PROJECT_DIR$" vcs="Git" />
++  </component>
++</project>
+\ No newline at end of file
+Index: Screens/QR.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React, { useState, useEffect } from \"react\";\r\nimport { Text, View, StyleSheet, Button } from \"react-native\";\r\nimport { BarCodeScanner } from \"expo-barcode-scanner\";\r\nimport { useDispatch, useSelector } from \"react-redux\";\r\n\r\nexport default function QR({ navigation }) {\r\n  const [hasPermission, setHasPermission] = useState(null);\r\n  const [scanned, setScanned] = useState(false);\r\n  const dispatch = useDispatch();\r\n  const state = useSelector((state) => state);\r\n\r\n  const CharityAction = () => {\r\n    var u = state.user;\r\n    u.charity += 10;\r\n    dispatch({ type: \"Charity\", state: { user: u } });\r\n  };\r\n\r\n  useEffect(() => {\r\n    (async () => {\r\n      const { status } = await BarCodeScanner.requestPermissionsAsync();\r\n      setHasPermission(status === \"granted\");\r\n    })();\r\n  }, []);\r\n\r\n  const handleBarCodeScanned = ({ type, data }) => {\r\n    setScanned(true);\r\n    alert(`Bar code with type ${type} and data ${data} has been scanned!`);\r\n  };\r\n\r\n  if (hasPermission === null) {\r\n    return <Text>Requesting for camera permission</Text>;\r\n  }\r\n  if (hasPermission === false) {\r\n    return <Text>No access to camera</Text>;\r\n  }\r\n\r\n  return (\r\n    <View style={styles.container}>\r\n      <BarCodeScanner\r\n        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}\r\n        style={StyleSheet.absoluteFillObject}\r\n      />\r\n      {scanned && (\r\n        <Button title={\"Tap to Scan Again\"} onPress={() => setScanned(false)} />\r\n      )}\r\n      <Button\r\n        title={state.user.role}\r\n        onPress={() => {\r\n          CharityAction();\r\n          navigation.push(\"Home\");\r\n        }}\r\n      />\r\n    </View>\r\n  );\r\n}\r\n\r\nconst styles = StyleSheet.create({\r\n  container: {\r\n    flex: 1,\r\n    flexDirection: \"column\",\r\n    justifyContent: \"center\",\r\n  },\r\n});\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- Screens/QR.js	(revision cf468c88b7a3829afa8b59e474c3916cbed0ba03)
++++ Screens/QR.js	(date 1616352646737)
+@@ -44,7 +44,7 @@
+         <Button title={"Tap to Scan Again"} onPress={() => setScanned(false)} />
+       )}
+       <Button
+-        title={state.user.role}
++        title={state.user.role[0]}
+         onPress={() => {
+           CharityAction();
+           navigation.push("Home");
+Index: Screens/Login.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React, { useState } from \"react\";\r\nimport {\r\n  View,\r\n  Text,\r\n  TextInput,\r\n  Button,\r\n  StatusBar,\r\n  StyleSheet,\r\n} from \"react-native\";\r\nimport { API_URL } from \"@env\";\r\nimport { useDispatch, useSelector } from \"react-redux\";\r\nimport axios from \"axios\";\r\nimport AsyncStorage from \"@react-native-async-storage/async-storage\";\r\n\r\nconst Login = ({ navigation }) => {\r\n  const [secure, setSecure] = useState(true);\r\n  const [email, setEmail] = useState(\"\");\r\n  const [password, setPassword] = useState(\"\");\r\n  const [emailError, setEmailError] = useState(true);\r\n  const [passwordError, setPasswordError] = useState(true);\r\n  const user = useSelector((state) => state.user);\r\n  const dispatch = useDispatch();\r\n\r\n  const storeData = async (value) => {\r\n    try {\r\n      await AsyncStorage.setItem(\"@storage_Key\", JSON.stringify(value));\r\n    } catch (e) {\r\n      // saving error\r\n    }\r\n  };\r\n\r\n  const LoginAction = async () => {\r\n    return await axios({\r\n      url: API_URL + \"/users/login\",\r\n      data: { email: email, password: password },\r\n      method: \"POST\",\r\n      validateStatus: () => true,\r\n      timeout: 2000,\r\n    })\r\n      .then((response) => {\r\n        if (response.data == \"400\") {\r\n          alert(\"Password doesn't match\");\r\n        } else if (response.data == \"404\") {\r\n          alert(\"Email doesn't exist\");\r\n        } else if (response.status == 200) {\r\n          let user = response.data;\r\n          storeData({ user: user });\r\n          dispatch({\r\n            type: \"LOGIN\",\r\n            state: { user: user },\r\n          });\r\n        } else {\r\n          console.log(\"server error \");\r\n          return;\r\n        }\r\n\r\n        {\r\n          let user = response.data;\r\n\r\n          //navigation.navigate(\"QR\");\r\n        }\r\n      })\r\n      .catch((error) => {\r\n        console.log(\"error\" + error);\r\n      });\r\n  };\r\n  return (\r\n    <View style={styles.container}>\r\n      <StatusBar />\r\n      <Text style={styles.title}>Login</Text>\r\n      <View style={styles.form}>\r\n        <TextInput\r\n          style={styles.input}\r\n          onChangeText={(val) => {\r\n            setEmail(val);\r\n          }}\r\n        />\r\n        {emailError ? <Text style={styles.error}>Email </Text> : null}\r\n        <TextInput\r\n          style={styles.input}\r\n          secureTextEntry={secure}\r\n          onChangeText={(val) => {\r\n            setPassword(val);\r\n          }}\r\n        />\r\n        {passwordError ? <Text style={styles.error}>Password </Text> : null}\r\n        <Button\r\n          title={\"Show Password\"}\r\n          onPress={() => {\r\n            setSecure(!secure);\r\n          }}\r\n        />\r\n        <Button title={\"Login\"} onPress={() => LoginAction()} />\r\n      </View>\r\n    </View>\r\n  );\r\n};\r\n\r\nconst styles = StyleSheet.create({\r\n  container: {\r\n    flex: 1,\r\n  },\r\n  title: {\r\n    alignSelf: \"center\",\r\n    fontSize: 45,\r\n  },\r\n  form: {\r\n    flex: 1,\r\n    justifyContent: \"center\",\r\n    alignItems: \"center\",\r\n  },\r\n  input: {\r\n    borderWidth: 1,\r\n    height: 40,\r\n    width: \"60%\",\r\n    borderRadius: 20,\r\n    padding: 10,\r\n    marginVertical: 20,\r\n  },\r\n  error: {\r\n    color: \"red\",\r\n    fontSize: 20,\r\n  },\r\n});\r\nexport default Login;\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- Screens/Login.js	(revision cf468c88b7a3829afa8b59e474c3916cbed0ba03)
++++ Screens/Login.js	(date 1616434554576)
+@@ -31,24 +31,23 @@
+ 
+   const LoginAction = async () => {
+     return await axios({
+-      url: API_URL + "/users/login",
++      url: "http://192.168.1.11:3000/users/login",
+       data: { email: email, password: password },
+       method: "POST",
+       validateStatus: () => true,
+-      timeout: 2000,
+     })
+       .then((response) => {
+-        if (response.data == "400") {
+-          alert("Password doesn't match");
+-        } else if (response.data == "404") {
+-          alert("Email doesn't exist");
+-        } else if (response.status == 200) {
+-          let user = response.data;
++        console.log("login action"+JSON.stringify(response.data))
++        if (response.data.status == "err") {
++          alert(response.data.message)
++        } else if (response.data.status == "ok") {
++          let user = response.data.UserData;
+           storeData({ user: user });
+           dispatch({
+             type: "LOGIN",
+             state: { user: user },
+           });
++          console.log(user);
+         } else {
+           console.log("server error ");
+           return;
+@@ -61,7 +60,7 @@
+         }
+       })
+       .catch((error) => {
+-        console.log("error" + error);
++        console.log("error " + error);
+       });
+   };
+   return (
+Index: Screens/Home.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React, { useEffect } from \"react\";\r\nimport { View, Text, Button, StatusBar } from \"react-native\";\r\nimport { useDispatch, useSelector } from \"react-redux\";\r\nimport AsyncStorage from \"@react-native-async-storage/async-storage\";\r\n\r\nconst Home = ({ navigation }) => {\r\n  const dispatch = useDispatch();\r\n  const state = useSelector((state) => state);\r\n  const storeData = async (value) => {\r\n    try {\r\n      await AsyncStorage.setItem(\"@storage_Key\", JSON.stringify(value));\r\n    } catch (e) {\r\n      // saving error\r\n    }\r\n  };\r\n\r\n  const LogoutAction = () => {\r\n    const data = {\r\n      user: {\r\n        __v: 0,\r\n        _id: \"\",\r\n        charity: 0,\r\n        createdAt: \"\",\r\n        email: \"\",\r\n        establishement: [],\r\n        location: [],\r\n        password: \"\",\r\n        photos: [\"\"],\r\n        products: [],\r\n        role: \"\",\r\n        transactions: [],\r\n      },\r\n    };\r\n    storeData(data);\r\n    dispatch({\r\n      type: \"LOGOUT\",\r\n      state: data,\r\n    });\r\n  };\r\n\r\n  const CharityAction = () => {\r\n    let u = state.user;\r\n    u.charity += 10;\r\n    dispatch({ type: \"Charity\", state: { user: u } });\r\n    storeData({ user: u });\r\n  };\r\n\r\n  useEffect(() => {}, [state]);\r\n\r\n  return (\r\n    <View>\r\n      <StatusBar />\r\n      <Text>Home {state.user.email}</Text>\r\n      <Text>Charity {state.user.charity.toFixed(3)}</Text>\r\n      {state.user.role == \"seller\" ? (\r\n        <Text>Duty {state.user.duty.toFixed(3)}</Text>\r\n      ) : null}\r\n      <Button title={\"QR\"} onPress={() => navigation.push(\"QR\")} />\r\n      <Button title={\"Charity\"} onPress={() => CharityAction()} />\r\n      <Button title={\"Logout\"} onPress={() => LogoutAction()} />\r\n    </View>\r\n  );\r\n};\r\n\r\nexport default Home;\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- Screens/Home.js	(revision cf468c88b7a3829afa8b59e474c3916cbed0ba03)
++++ Screens/Home.js	(date 1616436304879)
+@@ -51,11 +51,9 @@
+     <View>
+       <StatusBar />
+       <Text>Home {state.user.email}</Text>
+-      <Text>Charity {state.user.charity.toFixed(3)}</Text>
+-      {state.user.role == "seller" ? (
+-        <Text>Duty {state.user.duty.toFixed(3)}</Text>
+-      ) : null}
+-      <Button title={"QR"} onPress={() => navigation.push("QR")} />
++      <Text>Charity {state.user.charity}</Text>
++
++      <Button title={"QR"} onPress={() => navigation.navigate("QR")} />
+       <Button title={"Charity"} onPress={() => CharityAction()} />
+       <Button title={"Logout"} onPress={() => LogoutAction()} />
+     </View>

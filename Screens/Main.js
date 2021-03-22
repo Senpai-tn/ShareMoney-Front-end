@@ -10,6 +10,7 @@ import Login from "./Login";
 import QR from "./QR";
 import Register from "./Register";
 import Loading from "./Loading";
+import Map from "./Map";
 
 const AuthStack = createStackNavigator();
 const SellerStack = createStackNavigator();
@@ -39,6 +40,7 @@ const Main = ({ props }) => {
 
   useEffect(() => {
     getData();
+    //console.log(user.UserData.role.includes("user") == true);
   }, []);
 
   return (
@@ -49,10 +51,11 @@ const Main = ({ props }) => {
           <AuthStack.Screen name="Login" component={Login} />
           <AuthStack.Screen name="Register" component={Register} />
         </AuthStack.Navigator>
-      ) : user.role == "user" ? (
+      ) : 'user.role.includes("user")' == "true" ? (
         <UserStack.Navigator headerMode={"none"}>
           <UserStack.Screen name="QR" component={QR} />
           <UserStack.Screen name="Home" component={Home} />
+          <UserStack.Screen name="Map" component={Map} />
         </UserStack.Navigator>
       ) : (
         <SellerStack.Navigator>
@@ -65,6 +68,11 @@ const Main = ({ props }) => {
             options={{ headerShown: false }}
             name="QR"
             component={QR}
+          />
+          <SellerStack.Screen
+            options={{ headerShown: false }}
+            name="Map"
+            component={Map}
           />
         </SellerStack.Navigator>
       )}

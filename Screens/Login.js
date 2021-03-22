@@ -38,12 +38,14 @@ const Login = ({ navigation }) => {
       timeout: 2000,
     })
       .then((response) => {
+        console.log(response.data);
         if (response.data == "400") {
           alert("Password doesn't match");
         } else if (response.data == "404") {
           alert("Email doesn't exist");
         } else if (response.status == 200) {
-          let user = response.data;
+          console.log(response.data);
+          let user = response.data.UserData;
           storeData({ user: user });
           dispatch({
             type: "LOGIN",

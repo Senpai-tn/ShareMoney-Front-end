@@ -44,10 +44,10 @@ export default function QR({ navigation }) {
         <Button title={"Tap to Scan Again"} onPress={() => setScanned(false)} />
       )}
       <Button
-        title={state.user.role}
+        title={"state.user.role"}
         onPress={() => {
           CharityAction();
-          navigation.push("Home");
+          navigation.navigate("Home");
         }}
       />
     </View>

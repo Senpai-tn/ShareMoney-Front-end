@@ -5,7 +5,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
   const state = useSelector((state) => state);
+
   const storeData = async (value) => {
     try {
       await AsyncStorage.setItem("@storage_Key", JSON.stringify(value));
@@ -39,10 +41,9 @@ const Home = ({ navigation }) => {
   };
 
   const CharityAction = () => {
-    let u = state.user;
-    u.charity += 10;
-    dispatch({ type: "Charity", state: { user: u } });
-    storeData({ user: u });
+    user.charity += 10;
+    dispatch({ type: "Charity", state: { user: user } });
+    storeData({ user: user });
   };
 
   useEffect(() => {}, [state]);
@@ -50,12 +51,11 @@ const Home = ({ navigation }) => {
   return (
     <View>
       <StatusBar />
-      <Text>Home {state.user.email}</Text>
-      <Text>Charity {state.user.charity.toFixed(3)}</Text>
-      {state.user.role == "seller" ? (
-        <Text>Duty {state.user.duty.toFixed(3)}</Text>
-      ) : null}
-      <Button title={"QR"} onPress={() => navigation.push("QR")} />
+      <Text>Home {user.email}</Text>
+      <Text>Charity {user.charity}</Text>
+
+      <Button title={"QR"} onPress={() => navigation.navigate("QR")} />
+      <Button title={"Map"} onPress={() => navigation.navigate("Map")} />
       <Button title={"Charity"} onPress={() => CharityAction()} />
       <Button title={"Logout"} onPress={() => LogoutAction()} />
     </View>
