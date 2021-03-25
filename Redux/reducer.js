@@ -26,6 +26,8 @@ const MainReducer = (state = initialState, action) => {
       return action.state;
     case "REGISTER":
       return action.state;
+    case "UPDATE":
+      return action.state;
     default:
       return state;
   }

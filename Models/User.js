@@ -16,5 +16,6 @@ export default class User {
   FirstName = String;
   LastName = String;
   enabled = Number;
+  transactions = Array;
   User() {}
 }

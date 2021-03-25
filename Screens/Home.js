@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { View, Text, Button, StatusBar } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import User from "../Models/User";
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -41,7 +42,13 @@ const Home = ({ navigation }) => {
   };
 
   const CharityAction = () => {
+    let a = new User();
     user.charity += 10;
+    user.transactions.push({
+      id_seller: "",
+      charity: 10,
+      date: new Date(),
+    });
     dispatch({ type: "Charity", state: { user: user } });
     storeData({ user: user });
   };
@@ -51,11 +58,16 @@ const Home = ({ navigation }) => {
   return (
     <View>
       <StatusBar />
+      <Text>Home {user.username}</Text>
       <Text>Home {user.email}</Text>
       <Text>Charity {user.charity}</Text>
 
       <Button title={"QR"} onPress={() => navigation.navigate("QR")} />
       <Button title={"Map"} onPress={() => navigation.navigate("Map")} />
+      <Button
+        title={"Profile"}
+        onPress={() => navigation.navigate("Profile")}
+      />
       <Button title={"Charity"} onPress={() => CharityAction()} />
       <Button title={"Logout"} onPress={() => LogoutAction()} />
     </View>

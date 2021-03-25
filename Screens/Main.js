@@ -11,6 +11,8 @@ import QR from "./QR";
 import Register from "./Register";
 import Loading from "./Loading";
 import Map from "./Map";
+import Profile from "./Profile";
+import MapUser from "./MapUser";
 
 const AuthStack = createStackNavigator();
 const SellerStack = createStackNavigator();
@@ -59,30 +61,20 @@ const Main = ({ props }) => {
           <AuthStack.Screen name="Login" component={Login} />
           <AuthStack.Screen name="Register" component={Register} />
         </AuthStack.Navigator>
-      ) : user.role.includes("user") == true ? (
+      ) : user.role.includes("seller") == true ? (
+        <SellerStack.Navigator headerMode={"none"}>
+          <SellerStack.Screen name="Home" component={Home} />
+          <SellerStack.Screen name="QR" component={QR} />
+          <SellerStack.Screen name="Map" component={Map} />
+          <SellerStack.Screen name="Profile" component={Profile} />
+        </SellerStack.Navigator>
+      ) : (
         <UserStack.Navigator headerMode={"none"}>
           <UserStack.Screen name="QR" component={QR} />
           <UserStack.Screen name="Home" component={Home} />
-          <UserStack.Screen name="Map" component={Map} />
+          <UserStack.Screen name="Map" component={MapUser} />
+          <UserStack.Screen name="Profile" component={Profile} />
         </UserStack.Navigator>
-      ) : (
-        <SellerStack.Navigator>
-          <SellerStack.Screen
-            options={{ headerShown: false }}
-            name="Home"
-            component={Home}
-          />
-          <SellerStack.Screen
-            options={{ headerShown: false }}
-            name="QR"
-            component={QR}
-          />
-          <SellerStack.Screen
-            options={{ headerShown: false }}
-            name="Map"
-            component={Map}
-          />
-        </SellerStack.Navigator>
       )}
     </NavigationContainer>
   );

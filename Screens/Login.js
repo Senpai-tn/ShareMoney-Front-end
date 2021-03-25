@@ -35,7 +35,6 @@ const Login = ({ navigation }) => {
       data: { email: email, password: password },
       method: "POST",
       validateStatus: () => true,
-      timeout: 2000,
     })
       .then((response) => {
         console.log(response.data);

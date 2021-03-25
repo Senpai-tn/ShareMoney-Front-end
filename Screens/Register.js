@@ -120,7 +120,7 @@ const Register = ({ route, navigation }) => {
     };
     console.log(formData);
     await axios({
-      url: "http://192.168.1.11:3000/users/register",
+      url: API_URL + "/users/register",
       data: formData,
       method: "POST",
     }).then((res) => {
