@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, Button } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { useDispatch, useSelector } from "react-redux";
+import { API_URL } from "@env";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function QR({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
@@ -9,10 +12,25 @@ export default function QR({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
-  const CharityAction = () => {
+  const storeData = async (value) => {
+    try {
+      await AsyncStorage.setItem("@storage_Key", JSON.stringify(value));
+    } catch (e) {
+      // saving error
+    }
+  };
+
+  const CharityAction = async (charity, id_seller) => {
     var u = state.user;
-    u.charity += 10;
+    var c = parseFloat(charity);
+    u.charity += c - c / 10;
+    await axios.post(API_URL + "/users/charity", {
+      user: state.user,
+      charity: c,
+      id_seller: id_seller,
+    });
     dispatch({ type: "Charity", state: { user: u } });
+    storeData({ user: state.user });
   };
 
   useEffect(() => {
@@ -24,7 +42,9 @@ export default function QR({ navigation }) {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    var d = data.split(":");
+    alert(d[1] + " " + d[3]);
+    CharityAction(d[3], d[1]);
   };
 
   if (hasPermission === null) {
@@ -44,9 +64,8 @@ export default function QR({ navigation }) {
         <Button title={"Tap to Scan Again"} onPress={() => setScanned(false)} />
       )}
       <Button
-        title={"state.user.role"}
+        title={"Cancel"}
         onPress={() => {
-          CharityAction();
           navigation.navigate("Home");
         }}
       />

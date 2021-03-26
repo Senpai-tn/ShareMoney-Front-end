@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
-import { View, Text, Button, StatusBar } from "react-native";
+import { View, Text, Button, StatusBar, Image } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import User from "../Models/User";
+import axios from "axios";
+import { API_URL } from "@env";
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -41,27 +43,48 @@ const Home = ({ navigation }) => {
     });
   };
 
-  const CharityAction = () => {
+  const CharityAction = async () => {
     let a = new User();
-    user.charity += 10;
+    user.charity += 10 - 10 / 10;
+    user.duty += 10;
     user.transactions.push({
       id_seller: "",
       charity: 10,
       date: new Date(),
     });
+    await axios.post(API_URL + "/users/charity", {
+      user: user,
+      charity: 10,
+      id_seller: user._id,
+    });
     dispatch({ type: "Charity", state: { user: user } });
     storeData({ user: user });
   };
 
-  useEffect(() => {}, [state]);
+  useEffect(() => {
+    console.log(user.duty);
+  }, [state]);
 
   return (
     <View>
       <StatusBar />
-      <Text>Home {user.username}</Text>
-      <Text>Home {user.email}</Text>
+      <Image
+        source={{
+          uri: API_URL + "/user/" + user.photos[0],
+        }}
+        style={{
+          width: 200,
+          height: 200,
+          borderRadius: 100,
+          alignSelf: "center",
+        }}
+      />
+      <Text>Username {user.username}</Text>
+      <Text>Email {user.email}</Text>
       <Text>Charity {user.charity}</Text>
-
+      {user.role.includes("seller") == true ? (
+        <Text>Duty : {user.duty}</Text>
+      ) : null}
       <Button title={"QR"} onPress={() => navigation.navigate("QR")} />
       <Button title={"Map"} onPress={() => navigation.navigate("Map")} />
       <Button

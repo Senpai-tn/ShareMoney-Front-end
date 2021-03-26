@@ -102,8 +102,8 @@ const Register = ({ route, navigation }) => {
     user.establishement = [];
     user.products = [];
     user.birthdate = date;
-    user.charity = 0;
-    user.duty = 0;
+    user.charity = 0.0;
+    user.duty = 0.0;
     user.phone = phone;
     user.FirstName = FirstName;
     user.LastName = LastName;

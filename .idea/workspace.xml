@@ -19,9 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f9650446-cbba-4521-acb9-0660590efcb0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-    </list>
+    <list default="true" id="f9650446-cbba-4521-acb9-0660590efcb0" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -64,6 +62,7 @@
       <workItem from="1616433714143" duration="3043000" />
       <workItem from="1616436909298" duration="1021000" />
       <workItem from="1616438516342" duration="116000" />
+      <workItem from="1616755859634" duration="26000" />
     </task>
     <servers />
   </component>
