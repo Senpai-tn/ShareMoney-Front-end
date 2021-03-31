@@ -13,6 +13,7 @@ import Loading from "./Loading";
 import Map from "./Map";
 import Profile from "./Profile";
 import MapUser from "./MapUser";
+import Dashboard from "./Dashboard";
 
 const AuthStack = createStackNavigator();
 const SellerStack = createStackNavigator();
@@ -67,6 +68,7 @@ const Main = ({ props }) => {
           <SellerStack.Screen name="QR" component={QR} />
           <SellerStack.Screen name="Map" component={Map} />
           <SellerStack.Screen name="Profile" component={Profile} />
+          <SellerStack.Screen name="Dashboard" component={Dashboard} />
         </SellerStack.Navigator>
       ) : (
         <UserStack.Navigator headerMode={"none"}>
@@ -74,6 +76,7 @@ const Main = ({ props }) => {
           <UserStack.Screen name="Home" component={Home} />
           <UserStack.Screen name="Map" component={MapUser} />
           <UserStack.Screen name="Profile" component={Profile} />
+          <UserStack.Screen name="Dashboard" component={Dashboard} />
         </UserStack.Navigator>
       )}
     </NavigationContainer>

@@ -88,6 +88,10 @@ const Home = ({ navigation }) => {
       <Button title={"QR"} onPress={() => navigation.navigate("QR")} />
       <Button title={"Map"} onPress={() => navigation.navigate("Map")} />
       <Button
+        title={"Dashboard"}
+        onPress={() => navigation.navigate("Dashboard")}
+      />
+      <Button
         title={"Profile"}
         onPress={() => navigation.navigate("Profile")}
       />
